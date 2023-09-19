@@ -38,6 +38,12 @@ if __name__ == '__main__':
         publish=cloud_config['publish'],
     )
 
+
+    def subscribe_callback(topic, data):
+        print('get topic: {}, data: {}'.format(topic, data))
+
+    cloud.set_callback(subscribe_callback)
+
     if cloud.init(enforce=True):
         print('cloud init successfully.')
         res = cloud.post_data(

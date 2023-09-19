@@ -40,6 +40,12 @@ cloud = OneNetIot(
         subscribe=cloud_config['subscribe'],
         publish=cloud_config['publish'],
     )
+
+# 自定义订阅主题回调函数
+def subscribe_callback(topic, data):
+    print('get topic: {}, data: {}'.format(topic, data))
+# 设置下行订阅主题的回调函数
+cloud.set_callback(subscribe_callback)
     
 # 对象初始化，此方法中会连接onenet云服务（mqtt通道），并订阅参数中`subscribe`设置的主题。
 cloud.init(enforce=True)

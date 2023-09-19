@@ -48,6 +48,12 @@ class OneNetIot(object):
 
         self.__mqtt = None
         self.__listen_thread = Thread(target=self.__listen)
+        self.__callback = None
+
+    def set_callback(self, cb):
+        if not callable(cb):
+            raise TypeError
+        self.__callback = cb
 
     def init(self, enforce=False):
 
@@ -108,6 +114,8 @@ class OneNetIot(object):
     def __recv_callback(self, topic, data):
         topic = topic.decode()
         print('topic: {}; data: {}'.format(topic, data))
+        if self.__callback is not None:
+            self.__callback(topic, data)
 
     def __subscribe(self):
         qos = self.__kwargs.get('qos', 0)
